@@ -1,19 +1,22 @@
-
-
-
+use std::time::Instant;
 
 fn main() {
-    let input = include_str!("../input.txt");
+    let start_time = Instant::now();
+    let input = include_bytes!("../input.txt")
+        .split(|b| *b == b'\n')
+        .map(|l| l.split_at(l.len() / 2))
+        .map(|(a, b)|
+            b.iter().filter(|b| a.contains(b))
+                .map(|c|
+                    if *c >= b'a' {
+                        (c - b'a') + 1
+                    } else {
+                        (c - b'A') + 27
+                    }
 
-    let lines = input.split("\n");
+                ).next().unwrap())
+        .sum::<u8>();
+    let elapsed_time = start_time.elapsed();
 
-    for line in lines {
-        let len = line.len();
-
-        println!("{} -- {}", &line[0..len/2], &line[len/2..len])
-
-        // convert the
-
-    }
-
+    println!("Elapsed time: {:?}", elapsed_time);
 }
